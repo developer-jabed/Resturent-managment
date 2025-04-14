@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
 
-const Navbar = ({ user }) => {
+import { Link, useLocation } from "react-router-dom";
+import AuthContext from "../Provider/AuthContext";
+
+
+const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const { user, logOut } = useContext(AuthContext); // Using context to get the user and logOut function
   const location = useLocation();
 
-  // Close sidebar on route change
   useEffect(() => {
     setIsOpen(false);
   }, [location]);
@@ -40,26 +42,31 @@ const Navbar = ({ user }) => {
         <div className="text-xl text-orange-400 font-bold">🍔 FoodiesHub</div>
 
         {/* Desktop Menu */}
-        <nav
-          role="navigation"
-          className="hidden md:flex items-center font-bold text-[#ffb508] gap-6"
-        >
-          <a href="#home" className={linkClasses}>
+        <nav className="hidden md:flex items-center font-bold text-[#ffb508] gap-6">
+          <Link to="/ho" className={linkClasses}>
             Home
-          </a>
-          <a href="#foods" className={linkClasses}>
+          </Link>
+          <Link to="/foods" className={linkClasses}>
             All Foods
-          </a>
-          <a href="#gallery" className={linkClasses}>
+          </Link>
+          <Link to="/gallery" className={linkClasses}>
             Gallery
-          </a>
+          </Link>
 
           {user ? (
-            <img
-              src={user.photoURL}
-              alt={user.displayName || "User Profile"}
-              className="w-8 h-8 rounded-full border border-gray-300"
-            />
+            <>
+              <img
+                src={user.photoURL}
+                alt={user.displayName || "User Profile"}
+                className="w-8 h-8 rounded-full border border-gray-300"
+              />
+              <button
+                onClick={logOut}
+                className="px-4 py-1 border border-red-500 text-red-500 rounded-full hover:bg-red-500 hover:text-white transition-all duration-300"
+              >
+                Logout
+              </button>
+            </>
           ) : (
             <Link to="/auth/login" className={loginButtonClasses}>
               Login
@@ -74,7 +81,7 @@ const Navbar = ({ user }) => {
           aria-label="Toggle Menu"
           aria-expanded={isOpen}
         >
-          {isOpen ? <X /> : <Menu />}
+       
         </button>
       </div>
 
@@ -108,14 +115,23 @@ const Navbar = ({ user }) => {
                 className="hover:text-orange-500"
                 onClick={() => setIsOpen(false)}
               >
-                Gallery
+                Gallery 
               </a>
+              
               {user ? (
-                <img
-                  src={user.photoURL}
-                  alt={user.displayName || "User Profile"}
-                  className="w-10 h-10 rounded-full border border-gray-300"
-                />
+                <>
+                  <img
+                    src={user.photoURL}
+                    alt={user.displayName || "User Profile"}
+                    className="w-10 h-10 rounded-full border border-gray-300"
+                  />
+                  <button
+                    onClick={logOut}
+                    className="px-4 py-1 border border-red-500 text-red-500 rounded-full hover:bg-red-500 hover:text-white transition-all duration-300"
+                  >
+                    Logout
+                  </button>
+                </>
               ) : (
                 <Link to="/auth/login" className={loginButtonClasses}>
                   Login
