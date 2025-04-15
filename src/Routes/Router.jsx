@@ -5,6 +5,8 @@ import HomePage from '../Pages/HomePage';
 import Login from '../Authentication/Login';
 import AuthLayout from '../Layout/AuthLayout';
 import Register from '../Authentication/Register';
+import Foods from '../Pages/Foods';
+import Gallery from '../Pages/Gallery';
 
 
 
@@ -17,6 +19,14 @@ const Router = createBrowserRouter ([
                 path: "/", 
                 element: <HomePage></HomePage>,
             },
+            {
+                path: "/foods",
+                element:<Foods></Foods>
+            },
+            {
+                path: "/gallery",
+                element: <Gallery></Gallery>
+            }
             
         ],
         
