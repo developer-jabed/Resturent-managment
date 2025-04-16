@@ -12,7 +12,10 @@ const FoodPurchasePage = () => {
 
   const [foodName, setFoodName] = useState("");
   const [price, setPrice] = useState("");
+  const [availableQty, setAvailableQty] = useState(0);
   const [quantity, setQuantity] = useState("");
+  const [sellerEmail, setSellerEmail] = useState("");
+  const [isOwnItem, setIsOwnItem] = useState(false);
 
   useEffect(() => {
     fetch(`http://localhost:5000/Foods-collection/${id}`)
@@ -24,15 +27,25 @@ const FoodPurchasePage = () => {
             ? data.price.replace(/[^\d.]/g, "")
             : data.price;
         setPrice(cleanPrice || "");
+        setAvailableQty(data.quantity || 0);
+        setSellerEmail(data.sellerEmail || "");
+        setIsOwnItem(data.sellerEmail === user.email);
+        console.log(sellerEmail)
       })
       .catch((err) => {
         console.error(err);
         toast.error("Failed to load food data.");
       });
-  }, [id]);
+  }, [id, user.email]);
 
   const handlePurchase = async (e) => {
     e.preventDefault();
+
+    if (quantity > availableQty) {
+      toast.error("You can't purchase more than the available quantity.");
+      return;
+    }
+
     const purchaseInfo = {
       foodName,
       price: parseFloat(price),
@@ -41,9 +54,6 @@ const FoodPurchasePage = () => {
       buyerEmail: user.email,
       buyingDate: Date.now(),
     };
-    // const purchase-Count = {
-
-    // }
 
     const res = await fetch("http://localhost:5000/purchase", {
       method: "POST",
@@ -58,12 +68,15 @@ const FoodPurchasePage = () => {
       await fetch(`http://localhost:5000/Foods-collection/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ incrementCount: 1 }),
+        body: JSON.stringify({ decrementCount: quantity }), // update quantity accordingly
       });
+      setAvailableQty((prev) => prev - quantity);
     } else {
       toast.error("Failed to complete purchase.");
     }
   };
+
+  const isOutOfStock = availableQty === 0;
 
   return (
     <motion.div
@@ -80,69 +93,70 @@ const FoodPurchasePage = () => {
         Food Purchase
       </motion.h2>
 
-      <form onSubmit={handlePurchase} className="space-y-4">
-        {[foodName, price, quantity, user.displayName, user.email].map(
-          (_, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: i * 0.1, duration: 0.5 }}
-            >
-              {i === 0 && (
-                <input
-                  type="text"
-                  placeholder="Food Name"
-                  value={foodName}
-                  readOnly
-                  className="w-full p-3 border rounded-xl"
-                />
-              )}
-              {i === 1 && (
-                <input
-                  type="number"
-                  placeholder="Price"
-                  value={price}
-                  readOnly
-                  className="w-full p-3 border rounded-xl"
-                />
-              )}
-              {i === 2 && (
-                <input
-                  type="number"
-                  placeholder="Quantity"
-                  value={quantity}
-                  onChange={(e) => setQuantity(e.target.value)}
-                  required
-                  className="w-full p-3 border rounded-xl"
-                />
-              )}
-              {i === 3 && (
-                <input
-                  type="text"
-                  value={user.displayName}
-                  readOnly
-                  className="w-full p-3 border rounded-xl bg-gray-100"
-                />
-              )}
+      {(isOwnItem || isOutOfStock) && (
+        <div className="mb-4 text-red-600 font-medium text-center">
+          {isOwnItem
+            ? "You can't purchase your own added item."
+            : "This item is currently out of stock."}
+        </div>
+      )}
 
-              {i === 4 && (
-                <input
-                  type="email"
-                  value={user.email}
-                  readOnly
-                  className="w-full p-3 border rounded-xl bg-gray-100"
-                />
-              )}
-            </motion.div>
-          )
-        )}
+      <form onSubmit={handlePurchase} className="space-y-4">
+        <input
+          type="text"
+          placeholder="Food Name"
+          value={foodName}
+          readOnly
+          className="w-full p-3 border rounded-xl"
+        />
+        <input
+          type="number"
+          placeholder="Price"
+          value={price}
+          readOnly
+          className="w-full p-3 border rounded-xl"
+        />
+        <input
+          type="number"
+          placeholder="Quantity"
+          value={quantity}
+          onChange={(e) => {
+            const val = parseInt(e.target.value);
+            if (val <= availableQty) {
+              setQuantity(val);
+            } else {
+              toast.warn(`Max available quantity is ${availableQty}`);
+            }
+          }}
+          required
+          min={1}
+          max={availableQty}
+          disabled={isOutOfStock || isOwnItem}
+          className="w-full p-3 border rounded-xl"
+        />
+        <input
+          type="text"
+          value={user.displayName}
+          readOnly
+          className="w-full p-3 border rounded-xl bg-gray-100"
+        />
+        <input
+          type="email"
+          value={user.email}
+          readOnly
+          className="w-full p-3 border rounded-xl bg-gray-100"
+        />
 
         <motion.button
           type="submit"
-          className="w-full bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700 transition"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          disabled={isOutOfStock || isOwnItem}
+          className={`w-full py-3 rounded-xl transition text-white ${
+            isOutOfStock || isOwnItem
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-blue-600 hover:bg-blue-700"
+          }`}
+          whileHover={{ scale: isOutOfStock || isOwnItem ? 1 : 1.05 }}
+          whileTap={{ scale: isOutOfStock || isOwnItem ? 1 : 0.95 }}
         >
           Purchase
         </motion.button>
