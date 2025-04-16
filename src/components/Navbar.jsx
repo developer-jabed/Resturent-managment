@@ -7,11 +7,13 @@ import AuthContext from "../Provider/AuthContext";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const { user, logOut } = useContext(AuthContext);
   const location = useLocation();
 
   useEffect(() => {
     setIsOpen(false);
+    setProfileMenuOpen(false);
   }, [location]);
 
   useEffect(() => {
@@ -20,6 +22,16 @@ const Navbar = () => {
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (!e.target.closest(".profile-dropdown")) {
+        setProfileMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const isActive = (path) => location.pathname === path;
@@ -68,19 +80,55 @@ const Navbar = () => {
           </Link>
 
           {user ? (
-            <>
+            <div className="relative profile-dropdown">
               <img
                 src={user.photoURL}
                 alt={user.displayName || "User Profile"}
-                className="w-8 h-8 rounded-full border border-gray-300"
+                className="w-8 h-8 rounded-full border border-gray-300 cursor-pointer"
+                onClick={() => setProfileMenuOpen((prev) => !prev)}
               />
-              <button
-                onClick={logOut}
-                className="px-4 py-1 border border-red-500 text-red-500 rounded-full hover:bg-red-500 hover:text-white transition-all duration-300"
-              >
-                Logout
-              </button>
-            </>
+              <AnimatePresence>
+                {profileMenuOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="absolute right-0 mt-2 w-44 bg-white shadow-lg rounded-md border border-gray-200 z-50"
+                  >
+                    <Link
+                      to="/my-foods"
+                      className="block px-4 py-2 text-gray-700 hover:bg-green-100"
+                      onClick={() => setProfileMenuOpen(false)}
+                    >
+                      My Foods
+                    </Link>
+                    <Link
+                      to="/add-food"
+                      className="block px-4 py-2 text-gray-700 hover:bg-green-100"
+                      onClick={() => setProfileMenuOpen(false)}
+                    >
+                      Add Food
+                    </Link>
+                    <Link
+                      to="/my-orders"
+                      className="block px-4 py-2 text-gray-700 hover:bg-green-100"
+                      onClick={() => setProfileMenuOpen(false)}
+                    >
+                      My Orders
+                    </Link>
+                    <button
+                      onClick={() => {
+                        logOut();
+                        setProfileMenuOpen(false);
+                      }}
+                      className="w-full text-left px-4 py-2 text-red-500 hover:bg-red-100"
+                    >
+                      Logout
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           ) : (
             <Link to="/auth/login" className={loginButtonClasses}>
               Login
@@ -175,8 +223,32 @@ const Navbar = () => {
                     alt={user.displayName || "User Profile"}
                     className="w-10 h-10 rounded-full border border-gray-300"
                   />
+                  <Link
+                    to="/my-foods"
+                    className="text-left hover:text-green-600"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    My Foods
+                  </Link>
+                  <Link
+                    to="/add-food"
+                    className="text-left hover:text-green-600"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Add Food
+                  </Link>
+                  <Link
+                    to="/my-orders"
+                    className="text-left hover:text-green-600"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    My Orders
+                  </Link>
                   <button
-                    onClick={logOut}
+                    onClick={() => {
+                      logOut();
+                      setIsOpen(false);
+                    }}
                     className="px-4 py-1 border border-red-500 text-red-500 rounded-full hover:bg-red-500 hover:text-white transition-all duration-300"
                   >
                     Logout
