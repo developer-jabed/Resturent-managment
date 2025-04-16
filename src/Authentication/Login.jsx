@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Lottie from "lottie-react";
 import loginAnimation from "../assets/animations/login.json";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { auth } from "../Firebase/Firebase.init";
 import {
@@ -18,7 +18,8 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-
+  const location = useLocation();
+  const form = location.state || '/';
   const googleProvider = new GoogleAuthProvider();
 
   const handleLogin = async (e) => {
@@ -52,7 +53,7 @@ const Login = () => {
         timer: 2000,
         showConfirmButton: false,
       });
-      setTimeout(() => navigate("/"), 2000);
+      setTimeout(() => navigate(form), 2000);
     } catch (error) {
       Swal.fire({
         title: "Google Login Failed",

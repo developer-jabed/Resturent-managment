@@ -22,6 +22,8 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const isActive = (path) => location.pathname === path;
+
   const linkClasses =
     "relative hover:text-green-500 transition duration-300 transform hover:scale-105 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 hover:after:w-full after:h-[2px] after:bg-green-500 after:transition-all after:duration-300";
 
@@ -40,13 +42,28 @@ const Navbar = () => {
 
         {/* Desktop Menu */}
         <nav className="hidden md:flex items-center font-bold text-[#ffb508] gap-6">
-          <Link to="/" className={linkClasses}>
+          <Link
+            to="/"
+            className={`${linkClasses} ${
+              isActive("/") ? "text-green-600 font-semibold" : ""
+            }`}
+          >
             Home
           </Link>
-          <Link to="/foods" className={linkClasses}>
+          <Link
+            to="/foods"
+            className={`${linkClasses} ${
+              isActive("/foods") ? "text-green-600 font-semibold" : ""
+            }`}
+          >
             All Foods
           </Link>
-          <Link to="/gallery" className={linkClasses}>
+          <Link
+            to="/gallery"
+            className={`${linkClasses} ${
+              isActive("/gallery") ? "text-green-600 font-semibold" : ""
+            }`}
+          >
             Gallery
           </Link>
 
@@ -125,21 +142,27 @@ const Navbar = () => {
             <div className="flex flex-col gap-6 text-lg text-orange-500">
               <Link
                 to="/"
-                className="hover:text-green-500"
+                className={`hover:text-green-500 ${
+                  isActive("/") ? "text-green-600 font-semibold" : ""
+                }`}
                 onClick={() => setIsOpen(false)}
               >
                 Home
               </Link>
               <Link
                 to="/foods"
-                className="hover:text-green-500"
+                className={`hover:text-green-500 ${
+                  isActive("/foods") ? "text-green-600 font-semibold" : ""
+                }`}
                 onClick={() => setIsOpen(false)}
               >
                 All Foods
               </Link>
               <Link
                 to="/gallery"
-                className="hover:text-green-500"
+                className={`hover:text-green-500 ${
+                  isActive("/gallery") ? "text-green-600 font-semibold" : ""
+                }`}
                 onClick={() => setIsOpen(false)}
               >
                 Gallery

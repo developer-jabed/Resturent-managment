@@ -80,7 +80,7 @@ const SingleFood = () => {
           animate={{ opacity: [1, 0.7, 1] }}
           transition={{ duration: 3, repeat: Infinity }}
         >
-          Price: ${food.price}
+          Price: {food.price}
         </motion.p>
 
         <p className="text-gray-500 text-md">
