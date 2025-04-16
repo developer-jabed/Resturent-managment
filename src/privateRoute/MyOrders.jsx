@@ -21,10 +21,10 @@ const MyOrders = () => {
   }, [user?.email]);
 
   const handleDelete = async (id) => {
-    const confirm = window.confirm(
+    const confirmDelete = window.confirm(
       "Are you sure you want to delete this order?"
     );
-    if (!confirm) return;
+    if (!confirmDelete) return;
 
     try {
       const res = await fetch(`http://localhost:5000/purchase/${id}`, {
@@ -32,14 +32,16 @@ const MyOrders = () => {
       });
 
       if (res.ok) {
-        toast.success("Order deleted!");
-        setOrders(orders.filter((order) => order._id !== id));
+        toast.success("Order deleted successfully!");
+        setOrders((prevOrders) =>
+          prevOrders.filter((order) => order._id !== id)
+        );
       } else {
-        toast.error("Failed to delete order.");
+        toast.error("Failed to delete the order.");
       }
-    } catch (err) {
-      console.error(err);
-      toast.error("Error deleting order.");
+    } catch (error) {
+      console.error("Delete error:", error);
+      toast.error("Something went wrong while deleting the order.");
     }
   };
 
