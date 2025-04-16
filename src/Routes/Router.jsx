@@ -7,6 +7,7 @@ import AuthLayout from '../Layout/AuthLayout';
 import Register from '../Authentication/Register';
 import Foods from '../Pages/Foods';
 import Gallery from '../Pages/Gallery';
+import SingleFood from '../Pages/SingleFood';
 
 
 
@@ -26,6 +27,10 @@ const Router = createBrowserRouter ([
             {
                 path: "/gallery",
                 element: <Gallery></Gallery>
+            },
+            {
+                path: "/food/:id",
+                element: <SingleFood></SingleFood>
             }
             
         ],
