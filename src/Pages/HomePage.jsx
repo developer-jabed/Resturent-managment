@@ -2,22 +2,40 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
+import { Helmet } from "react-helmet";
 
 const HomePage = () => {
   const [topFoods, setTopFoods] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch("/api/foods") // Replace with actual API
+    fetch("http://localhost:5000/Foods-collection")
       .then((res) => res.json())
       .then((data) => {
         const sorted = data.sort((a, b) => b.purchaseCount - a.purchaseCount);
         setTopFoods(sorted.slice(0, 6));
+        setLoading(false);
+        console.log(data)
+      })
+      .catch((err) => {
+        console.error("Error fetching foods:", err);
+        setError("Failed to load top foods.");
+        setLoading(false);
       });
   }, []);
 
   return (
     <div>
-      {/* Banner Section */}
+      <Helmet>
+        <title>Home | Food Delivery</title>
+        <meta
+          name="description"
+          content="Delicious meals delivered fast. Discover top-rated meals and enjoy smooth ordering."
+        />
+      </Helmet>
+
+      {/* Banner */}
       <section
         className="bg-cover bg-center h-[70vh] text-white flex items-center justify-center"
         style={{ backgroundImage: "url('/banner.jpg')" }}
@@ -56,40 +74,56 @@ const HomePage = () => {
         </motion.div>
       </section>
 
-      {/* Top Foods Section */}
+      {/* Top Foods */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-6xl mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold text-orange-500 mb-10">
             Top Selling Foods
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {topFoods.map((food) => (
-              <motion.div
-                key={food.id}
-                className="bg-white rounded-xl shadow-md p-4 flex flex-col"
-                whileHover={{ scale: 1.05 }}
-              >
-                <img
-                  src={food.image}
-                  alt={food.name}
-                  className="w-full h-48 object-cover rounded-md mb-4"
-                />
-                <h3 className="text-xl font-semibold text-orange-400 mb-2">
-                  {food.name}
-                </h3>
-                <p className="text-gray-600 flex-1">
-                  {food.description.slice(0, 60)}...
-                </p>
-                <p className="mt-2 font-bold">Price: ${food.price}</p>
-                <Link
-                  to={`/foods/${food.id}`}
-                  className="mt-4 inline-block bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full"
+
+          {loading ? (
+            <p className="text-center text-gray-500 col-span-3">
+              Loading top foods...
+            </p>
+          ) : error ? (
+            <p className="text-center text-red-500 col-span-3">{error}</p>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {topFoods.map((food) => (
+                <motion.div
+                  key={food.id}
+                  className="bg-white rounded-xl shadow-md p-4 flex flex-col"
+                  whileHover={{ scale: 1.05 }}
                 >
-                  Details
-                </Link>
-              </motion.div>
-            ))}
-          </div>
+                  <img
+                    src={food.foodImage}
+                    alt={food.foodName || "Food Image"}
+                    className="w-full h-48 object-cover rounded-md mb-4"
+                  />
+                  <h3 className="text-xl font-semibold text-orange-400 mb-2">
+                    {food.foodName || "Untitled Dish"}
+                  </h3>
+                  <p className="text-gray-600 flex-1">
+                    {(food.description || "No description available").slice(
+                      0,
+                      60
+                    )}
+                    ...
+                  </p>
+                  <p className="mt-2 font-bold">
+                    Price: ${food.price ?? "N/A"}
+                  </p>
+                  <Link
+                    to={`/foods/${food.id}`}
+                    className="mt-4 inline-block bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full"
+                  >
+                    Details
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+          )}
+
           <Link
             to="/foods"
             className="mt-8 inline-block bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-full"
@@ -99,7 +133,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Extra Section 1: Testimonials */}
+      {/* Testimonials */}
       <section className="bg-white py-16">
         <div className="max-w-5xl mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold text-green-500 mb-10">
@@ -128,7 +162,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Extra Section 2: How It Works */}
+      {/* How It Works */}
       <section className="bg-green-50 py-16">
         <div className="max-w-5xl mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold text-orange-500 mb-10">

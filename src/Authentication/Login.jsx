@@ -12,6 +12,7 @@ import {
   GoogleAuthProvider,
 } from "firebase/auth";
 import { Eye, EyeOff } from "lucide-react";
+import axios from "axios";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -19,21 +20,31 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const location = useLocation();
-  const form = location.state || '/';
+  const form = location.state || "/";
   const googleProvider = new GoogleAuthProvider();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
+
+      // Request JWT token
+       axios.post("http://localhost:5000/jwt",  { email }, { withCredentials: true })
+       .then(data =>{
+        console.log(data)
+       })
+
+      // Success alert
       Swal.fire({
         title: "Login Successful!",
-        text: "Redirecting to home...",
+        text: "Redirecting...",
         icon: "success",
         timer: 2000,
         showConfirmButton: false,
       });
-      setTimeout(() => navigate("/"), 2000);
+
+      // Redirect
+      // setTimeout(() => navigate(form), 2000);
     } catch (error) {
       Swal.fire({
         title: "Login Failed",
@@ -42,7 +53,6 @@ const Login = () => {
       });
     }
   };
-
   const handleGoogleLogin = async () => {
     try {
       await signInWithPopup(auth, googleProvider);

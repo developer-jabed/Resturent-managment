@@ -1,8 +1,8 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import AuthContext from "../Provider/AuthContext";
 
@@ -30,7 +30,6 @@ const FoodPurchasePage = () => {
         setAvailableQty(data.quantity || 0);
         setSellerEmail(data.sellerEmail || "");
         setIsOwnItem(data.sellerEmail === user.email);
-        console.log(sellerEmail)
       })
       .catch((err) => {
         console.error(err);
@@ -55,25 +54,19 @@ const FoodPurchasePage = () => {
       buyingDate: Date.now(),
     };
 
-    const res = await fetch("http://localhost:5000/purchase", {
+    fetch("http://localhost:5000/purchase", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(purchaseInfo),
     });
 
-    if (res.ok) {
-      toast.success("Purchase successful!");
-      setQuantity("");
-
-      await fetch(`http://localhost:5000/Foods-collection/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ decrementCount: quantity }), // update quantity accordingly
-      });
-      setAvailableQty((prev) => prev - quantity);
-    } else {
-      toast.error("Failed to complete purchase.");
-    }
+    await fetch(`http://localhost:5000/Foods-collection/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ incrementCount: 1 }),
+    });
+  
+    toast.success("Purchase successful!");
   };
 
   const isOutOfStock = availableQty === 0;
@@ -104,14 +97,12 @@ const FoodPurchasePage = () => {
       <form onSubmit={handlePurchase} className="space-y-4">
         <input
           type="text"
-          placeholder="Food Name"
           value={foodName}
           readOnly
           className="w-full p-3 border rounded-xl"
         />
         <input
           type="number"
-          placeholder="Price"
           value={price}
           readOnly
           className="w-full p-3 border rounded-xl"
