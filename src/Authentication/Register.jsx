@@ -15,7 +15,7 @@ const Register = () => {
   const { createUser } = useContext(AuthContext);
 
   const [form, setForm] = useState({
-    displayame: "",
+    displayName: "",
     email: "",
     photoURL: "",
     password: "",
@@ -63,17 +63,28 @@ const Register = () => {
         form.photoURL,
         form.displayName
       );
+      const users = {
+        email: form.email,
+        password: form.password,
+        photoURL: form.photoURL,
+        displayName: form.displayName,
+      }
 
-      createUser(userCredential.user); // Store user in context
+      createUser(userCredential.user); 
+      await fetch("http://localhost:5000/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(users),
+      }); 
 
-      // SweetAlert success alert
+      
       Swal.fire({
         title: "Success!",
         text: "Account created successfully!",
         icon: "success",
         confirmButtonText: "Go to Home",
       }).then(() => {
-        navigate("/"); // Redirect to home after confirmation
+        navigate("/"); 
       });
     } catch (error) {
       toast.error(error.message);
@@ -100,7 +111,7 @@ const Register = () => {
               type="text"
               name="name"
               placeholder="Your Name"
-              value={form.name}
+              value={form.displayName}
               onChange={handleChange}
               className="px-4 py-2 rounded-lg bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-300"
               required

@@ -16,7 +16,7 @@ const HomePage = () => {
         const sorted = data.sort((a, b) => b.purchaseCount - a.purchaseCount);
         setTopFoods(sorted.slice(0, 6));
         setLoading(false);
-        console.log(data)
+        console.log(data);
       })
       .catch((err) => {
         console.error("Error fetching foods:", err);
@@ -114,7 +114,7 @@ const HomePage = () => {
                     Price: ${food.price ?? "N/A"}
                   </p>
                   <Link
-                    to={`/foods/${food.id}`}
+                    to={`/food/${food._id}`}
                     className="mt-4 inline-block bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full"
                   >
                     Details
