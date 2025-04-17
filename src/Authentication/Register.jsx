@@ -15,7 +15,7 @@ const Register = () => {
   const { createUser } = useContext(AuthContext);
 
   const [form, setForm] = useState({
-    name: "",
+    displayame: "",
     email: "",
     photoURL: "",
     password: "",
