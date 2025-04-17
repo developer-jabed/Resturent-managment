@@ -3,12 +3,14 @@ import React, { useState, useEffect, useContext } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 import AuthContext from "../Provider/AuthContext";
+import { ThemeContext } from "../context/ThemeContext";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const { user, logOut } = useContext(AuthContext);
+  const { theme, toggleTheme } = useContext(ThemeContext);
   const location = useLocation();
 
   useEffect(() => {
@@ -49,10 +51,8 @@ const Navbar = () => {
       }`}
     >
       <div className="flex items-center justify-between p-4 max-w-7xl mx-auto">
-        {/* Logo */}
         <div className="text-xl text-orange-400 font-bold">🍔 FoodiesHub</div>
 
-        {/* Desktop Menu */}
         <nav className="hidden md:flex items-center font-bold text-[#ffb508] gap-6">
           <Link
             to="/"
@@ -134,9 +134,58 @@ const Navbar = () => {
               Login
             </Link>
           )}
+          <motion.button
+            onClick={toggleTheme}
+            initial={false}
+            animate={{
+              backgroundColor: theme === "dark" ? "#4B5563" : "#F3F4F6",
+            }}
+            className="w-14 h-8 flex items-center px-1 rounded-full border border-gray-300 dark:border-gray-600 cursor-pointer transition-colors"
+          >
+            <motion.div
+              layout
+              transition={{ type: "spring", stiffness: 500, damping: 30 }}
+              className={`w-6 h-6 rounded-full shadow-md flex items-center justify-center ${
+                theme === "dark"
+                  ? "ml-auto bg-white text-black"
+                  : "mr-auto bg-gray-800 text-white"
+              }`}
+            >
+              {theme === "dark" ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 3v1m0 16v1m8.485-8.485h-1M4.515 12.515h-1M16.95 7.05l-.707-.707M7.757 16.243l-.707-.707M16.95 16.95l-.707.707M7.757 7.757l-.707.707M12 5a7 7 0 100 14 7 7 0 000-14z"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 3c.132 0 .263.005.393.014a9.001 9.001 0 100 17.972A9 9 0 0112 3z"
+                  />
+                </svg>
+              )}
+            </motion.div>
+          </motion.button>
         </nav>
 
-        {/* Mobile Menu Icon */}
         <button
           className="md:hidden text-orange-500"
           onClick={() => setIsOpen(!isOpen)}
@@ -177,7 +226,6 @@ const Navbar = () => {
         </button>
       </div>
 
-      {/* Mobile Sidebar */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -263,6 +311,56 @@ const Navbar = () => {
                   Login
                 </Link>
               )}
+              <motion.button
+                onClick={toggleTheme}
+                initial={false}
+                animate={{
+                  backgroundColor: theme === "dark" ? "#4B5563" : "#F3F4F6",
+                }}
+                className="w-14 h-8 flex items-center px-1 rounded-full border border-gray-300 dark:border-gray-600 cursor-pointer transition-colors"
+              >
+                <motion.div
+                  layout
+                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                  className={`w-6 h-6 rounded-full shadow-md flex items-center justify-center ${
+                    theme === "dark"
+                      ? "ml-auto bg-white text-black"
+                      : "mr-auto bg-gray-800 text-white"
+                  }`}
+                >
+                  {theme === "dark" ? (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-4 h-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 3v1m0 16v1m8.485-8.485h-1M4.515 12.515h-1M16.95 7.05l-.707-.707M7.757 16.243l-.707-.707M16.95 16.95l-.707.707M7.757 7.757l-.707.707M12 5a7 7 0 100 14 7 7 0 000-14z"
+                      />
+                    </svg>
+                  ) : (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-4 h-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 3c.132 0 .263.005.393.014a9.001 9.001 0 100 17.972A9 9 0 0112 3z"
+                      />
+                    </svg>
+                  )}
+                </motion.div>
+              </motion.button>
             </div>
           </motion.div>
         )}
