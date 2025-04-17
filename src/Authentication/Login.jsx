@@ -28,13 +28,13 @@ const Login = () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
 
-      // Request JWT token
+      
        axios.post("http://localhost:5000/jwt",  { email }, { withCredentials: true })
        .then(data =>{
         console.log(data)
        })
 
-      // Success alert
+    
       Swal.fire({
         title: "Login Successful!",
         text: "Redirecting...",
@@ -43,8 +43,8 @@ const Login = () => {
         showConfirmButton: false,
       });
 
-      // Redirect
-      // setTimeout(() => navigate(form), 2000);
+      
+      setTimeout(() => navigate(form), 2000);
     } catch (error) {
       Swal.fire({
         title: "Login Failed",
@@ -81,12 +81,12 @@ const Login = () => {
         transition={{ duration: 0.6, ease: "easeOut" }}
         className="bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl p-8 w-full max-w-4xl flex flex-col md:flex-row items-center gap-8"
       >
-        {/* Lottie Animation */}
+      
         <div className="w-full md:w-1/2">
           <Lottie animationData={loginAnimation} loop={true} />
         </div>
 
-        {/* Login Form */}
+        
         <div className="w-full md:w-1/2 text-white">
           <h2 className="text-3xl font-bold mb-6 text-center">
             Welcome Back 👋

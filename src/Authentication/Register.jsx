@@ -8,7 +8,7 @@ import AuthContext from "../Provider/AuthContext";
 import { motion } from "framer-motion";
 import Lottie from "lottie-react";
 import animationData from "../assets/animations/register.json";
-import Swal from "sweetalert2"; // Import SweetAlert2
+import Swal from "sweetalert2"; 
 
 const Register = () => {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ const Register = () => {
     password: "",
   });
 
-  const [showPassword, setShowPassword] = useState(false); // State for toggling password visibility
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     setForm((prev) => ({
