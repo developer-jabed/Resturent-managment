@@ -10,7 +10,12 @@ const HomePage = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:5000/Foods-collection")
+    fetch(
+      "https://resturent-managment-server-side.vercel.app/Foods-collection",
+      {
+        credentials: "include", // only if needed
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         const sorted = data.sort((a, b) => b.purchaseCount - a.purchaseCount);

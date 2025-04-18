@@ -29,7 +29,8 @@ const AddFood = () => {
     };
 
     try {
-      const res = await fetch("http://localhost:5000/Foods-collection", {
+      const res = await fetch("https://resturent-managment-server-side.vercel.app/Foods-collection", {
+        credentials: 'include',
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -18,7 +18,7 @@ const FoodPurchasePage = () => {
   const [isOwnItem, setIsOwnItem] = useState(false);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/Foods-collection/${id}`)
+    fetch(`https://resturent-managment-server-side.vercel.app/Foods-collection/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setFoodName(data.foodName || "");
@@ -54,13 +54,13 @@ const FoodPurchasePage = () => {
       buyingDate: Date.now(),
     };
 
-    fetch("http://localhost:5000/purchase", {
+    fetch("https://resturent-managment-server-side.vercel.app/purchase", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(purchaseInfo),
     });
 
-    await fetch(`http://localhost:5000/Foods-collection/${id}`, {
+    await fetch(`https://resturent-managment-server-side.vercel.app/Foods-collection/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ incrementCount: 1 }),

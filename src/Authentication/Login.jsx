@@ -29,7 +29,7 @@ const Login = () => {
       await signInWithEmailAndPassword(auth, email, password);
 
       
-       axios.post("http://localhost:5000/jwt",  { email }, { withCredentials: true })
+       axios.post("https://resturent-managment-server-side.vercel.app/jwt",  { email }, { withCredentials: true })
        .then(data =>{
         console.log(data)
        })

@@ -14,6 +14,7 @@ import AddFood from "../privateRoute/AddFood";
 import MyFoods from "../privateRoute/MyFoods";
 import UpdateFood from "../privateRoute/UpdateFood";
 import MyOrders from "../privateRoute/MyOrders";
+import NotFound from "../components/NotFound";
 
 const Router = createBrowserRouter([
   {
@@ -87,5 +88,6 @@ const Router = createBrowserRouter([
       { path: "/auth/register", element: <Register></Register> },
     ],
   },
+  { path: "*", element: <NotFound></NotFound> },
 ]);
 export default Router;

@@ -12,7 +12,7 @@ const MyOrders = () => {
 
   useEffect(() => {
     if (user?.email) {
-      fetch(`http://localhost:5000/purchase?email=${user.email}`)
+      fetch(`https://resturent-managment-server-side.vercel.app/purchase?email=${user.email}`)
         .then((res) => res.json())
         .then((data) => setOrders(data))
         .catch((err) => {
@@ -29,7 +29,7 @@ const MyOrders = () => {
     if (!confirmDelete) return;
 
     try {
-      const res = await fetch(`http://localhost:5000/purchase/${id}`, {
+      const res = await fetch(`https://resturent-managment-server-side.vercel.app/purchase/${id}`, {
         method: "DELETE",
       });
 

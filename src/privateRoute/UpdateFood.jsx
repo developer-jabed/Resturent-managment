@@ -13,7 +13,7 @@ const UpdateFood = () => {
     const fetchFood = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/Foods-collection/${id}`
+          `https://resturent-managment-server-side.vercel.app/Foods-collection/${id}`
         );
         const data = await response.json();
         setFood(data);
@@ -42,7 +42,7 @@ const UpdateFood = () => {
 
     try {
       setLoading(true);
-      const res = await fetch(`http://localhost:5000/Foods-collection/${id}`, {
+      const res = await fetch(`https://resturent-managment-server-side.vercel.app/Foods-collection/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

@@ -9,7 +9,7 @@ const SingleFood = () => {
   const [food, setFood] = useState(null);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/Foods-collection/${id}`)
+    fetch(`https://resturent-managment-server-side.vercel.app/Foods-collection/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setFood(data);

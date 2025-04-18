@@ -11,7 +11,7 @@ const MyFoods = () => {
 
   useEffect(() => {
     const fetchFoods = async () => {
-      const response = await fetch("http://localhost:5000/Foods-collection");
+      const response = await fetch("https://resturent-managment-server-side.vercel.app/Foods-collection");
       const data = await response.json();
       const userFoods = data.filter(
         (food) => food.email === user.email
@@ -40,7 +40,7 @@ const MyFoods = () => {
       setLoading(true);
       try {
         const response = await fetch(
-          `http://localhost:5000/Foods-collection/${id}`,
+          `https://resturent-managment-server-side.vercel.app/${id}`,
           {
             method: "DELETE",
           }

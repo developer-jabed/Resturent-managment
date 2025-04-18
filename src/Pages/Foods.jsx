@@ -9,7 +9,12 @@ const Foods = () => {
   const [filteredFoods, setFilteredFoods] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/Foods-collection")
+    fetch(
+      "https://resturent-managment-server-side.vercel.app/Foods-collection",
+      {
+        credentials: "include", // only if needed
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         setFoods(data);
