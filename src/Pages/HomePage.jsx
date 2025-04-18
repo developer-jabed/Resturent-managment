@@ -80,7 +80,7 @@ const HomePage = () => {
       </section>
 
       {/* Top Foods */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-12 bg-gray-50">
         <div className="max-w-6xl mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold text-orange-500 mb-10">
             Top Selling Foods
@@ -139,7 +139,7 @@ const HomePage = () => {
       </section>
 
       {/* Testimonials */}
-      <section className="bg-white py-16">
+      <section className="bg-white py-12">
         <div className="max-w-5xl mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold text-green-500 mb-10">
             What Our Customers Say

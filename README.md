@@ -1,3 +1,14 @@
+
+
+# live Link : https://resturent-managment.web.app/
+# git hub client : https://github.com/developer-jabed/Resturent-managment
+# server Link : https://github.com/developer-jabed/Resturent-Managment-server
+# server Live Link : https://resturent-managment-server-side.vercel.app/
+
+
+
+
+
 # 🍽️ Restaurant Management System
 
 A full-featured Restaurant Management System that simplifies the operations of a restaurant, including table reservations, menu management, order processing, and staff handling. Built to help restaurant owners manage their business efficiently through a digital interface.
